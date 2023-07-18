@@ -1,23 +1,33 @@
 import logo from './logo.svg';
 import './App.css';
-
+import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
+import Signin from './components/Signin';
+import Home from './components/Home';
+import Signup from './components/Signup'
+import Addproducts from './components/Addproduct';
+import Cart from './components/Cart';
+import DeliveryAdd from './components/DeliveryAdd'
+import Paym from './components/Paym'
+import Wishlist from './components/Wishlist';
+import MyOrders from './components/MyOrders';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Routes>
+          <Route exact path='/' Component={Home} />
+          <Route exact path='/signin' Component={Signin} />
+          <Route exact path='/signup' Component={Signup} />
+          <Route exact path='/addproduct' Component={Addproducts} />
+          <Route exact path='/cart' Component={Cart} />
+          <Route exact path='/address' Component={DeliveryAdd} />
+          <Route exact path='/paym' Component={Paym} />
+          <Route exact path='/orders' Component={MyOrders} />
+          <Route exact path='/wishlist' Component={Wishlist} />
+          
+        </Routes>
+
+      </Router>
     </div>
   );
 }
