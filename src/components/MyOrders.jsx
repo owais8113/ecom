@@ -81,17 +81,20 @@ const MyOrders = () => {
                       <div className="payment-method2">Date & Time: {order.datePlaced} | {order.timePlaced}</div>
                     </div>
                   )}
-                  <div className="cart-content2">
+                  <div className="cart-content3">
                     {order.cart.map((product, index) => (
-                      <div key={index} className="product-item2">
-                        <div className="product-title2">{product.title}</div>
-                        <div className="product-qty2">Qty: {product.qty}</div>
-                        <div className="product-price2">
+                      <div key={index} className="product-item3">
+                        <div className="img">
+                          <img src={product.url} alt="Product" className="product-image2" />
+                        </div>
+                        <div className="product-details3">
+
+                        <div className="product-title3">{product.title}</div>
+                        <div className="product-qty3">Qty: {product.qty}</div>
+                        <div className="product-price3">
                           <FaRupeeSign />
                           {product.TotalPrice}
                         </div>
-                        <div className="img">
-                          <img src={product.url} alt="Product" className="product-image2" />
                         </div>
                       </div>
                     ))}

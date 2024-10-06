@@ -50,7 +50,7 @@ const DeliveryAdd = () => {
   };
   
   const backbtn = () => {
-    navigate('/');
+    navigate('/cart');
   };
 
   return (

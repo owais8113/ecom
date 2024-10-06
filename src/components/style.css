@@ -1844,6 +1844,15 @@ option {
     border-radius: 6px;
   }
 
+    .delete-button2 {
+  background-color:#127ea9;
+  border-radius: 5px;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ffffff; /* Dark red color */
+  transition: color 0.3s;
+}
   
 .product-price2 {
   color: #0c5370;
@@ -1964,4 +1973,246 @@ option {
 
 .profile-menu-icon {
   margin-right: 8px;
+}
+
+.products-container2 {
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #faf3f3;
+}
+
+.products-heading2 {
+  font-size: 24px;
+  font-weight: bold;
+  width: 100%;
+  color:#0c5370;
+  margin-bottom: 20px;
+  text-align: -webkit-center;
+}
+
+.products-grid2 {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.product-item2 {
+  background-color: #202836;
+  padding: 20px;
+  border-radius: 5px;
+  display: grid;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.product-item2:hover {
+  transform: translateY(-5px);
+}
+
+.product-title2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.product-description2 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.product-price2 {
+  font-weight: bold;
+  color: #c0392b;
+  color: #fff;
+}
+
+.product-image2 {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+@media (max-width: 375px) {
+
+  .delete-button2 {
+    background-color:#127ea9;
+    border-radius: 5px;
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: #ffffff; /* Dark red color */
+    transition: color 0.3s;
+  }
+}
+@media (min-width: 333px) {
+  .products-grid2 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .product-details3 {
+    flex-flow: wrap;
+    }
+    .product-title3 {
+      font-size: 15px;
+      font-weight: bold;
+      margin: 0rem;
+    }
+    
+    .product-qty3 {
+      font-size: 13px;
+      margin: 0rem;
+    }
+    
+    .product-price3 {
+      font-size: 15px;
+      margin: 0rem;
+      color: #00aaff;
+    }
+    
+}
+@media (max-width:550px){
+  .product-title3 {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0rem;
+  }
+  
+  .product-qty3 {
+    font-size: 13px;
+    margin: 0rem;
+  }
+  
+  .product-price3 {
+    font-size: 15px;
+    margin: 0rem;
+  }
+}
+@media (min-width: 508px) {
+  .products-grid2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .products-grid2 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.delete-button2 {
+  background-color:#127ea9;
+  border-radius: 5px;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #ffffff; /* Dark red color */
+  transition: color 0.3s;
+}
+
+.delete-button2:hover {
+  color:white;
+  background-color: #0c5370; 
+  
+}
+
+/* CSS for the product items */
+.cart-content3 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-item3 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  transition: transform 0.3s ease;
+}
+
+.product-item3:hover {
+  transform: scale(1.05);
+}
+
+.product-title3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0.5rem;
+}
+
+.product-qty3 {
+  font-size: 16px;
+  margin: 0.5rem;
+}
+
+.product-price3 {
+  font-size: 18px;
+  margin: 0.5rem;
+  color: #00aaff;
+}
+
+/* Image styles */
+.img {
+  flex: 0 0 150px;
+  margin-right: 20px;
+}
+
+.product-image2 {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Styles for the parent container and the rupee sign icon */
+.cart-content3 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-item3 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  transition: transform 0.3s ease;
+}
+
+.product-item3:hover {
+  transform: scale(1.05);
+}
+
+.product-title3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.product-qty3 {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.product-price3 {
+  font-size: 18px;
+  color: #000000;
+}
+
+/* Image styles */
+.img {
+  flex: 0 0 150px;
+  margin-right: 20px;
+}
+
+.product-image2 {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.product-details3 {
+  display: flex;
+  width: 80%;
+  justify-content: right;
 }

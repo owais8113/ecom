@@ -5,7 +5,9 @@ import { auth, fs } from '../Config';
 import { useNavigate } from 'react-router-dom';
 import Navbar1 from './Navbar1';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes, faSearch, faRupee } from '@fortawesome/free-solid-svg-icons';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 export default function Home() {
@@ -17,6 +19,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   function Getcurrentuser() {
     const [user, setUser] = useState(null);
@@ -25,7 +28,7 @@ export default function Home() {
       auth.onAuthStateChanged(user => {
         if (user) {
           fs.collection('users').doc(user.uid).get().then(snapshot => {
-            setUser(snapshot.data().Fullname)
+            setUser(snapshot.data())
           })
         } else {
           setUser(null);
@@ -41,45 +44,51 @@ export default function Home() {
 
   const getProducts = async (sortOption) => {
     let productsCollection = fs.collection('products');
-
+  
     if (selectedCategory) {
       productsCollection = productsCollection.where('category', '==', selectedCategory);
     }
-
+  
     if (selectedPriceRange) {
       const [minPrice, maxPrice] = selectedPriceRange.split('-');
       productsCollection = productsCollection.where('price', '>=', parseInt(minPrice)).where('price', '<=', parseInt(maxPrice));
     }
-
+  
     // Apply sorting based on selected option
     if (sortOption === 'priceLowToHigh') {
       productsCollection = productsCollection.orderBy('price', 'asc');
     } else if (sortOption === 'priceHighToLow') {
       productsCollection = productsCollection.orderBy('price', 'desc');
     } else if (sortOption === 'nameAZ') {
-      productsCollection = productsCollection.orderBy('name', 'asc');
+      productsCollection = await productsCollection.get();
+      const productsArray = productsCollection.docs.map((snap) => snap.data()).filter((product) => product.name !== undefined);
+      productsArray.sort((a, b) => a.name.localeCompare(b.name));
+      setProducts(productsArray);
+      setFilteredProducts(productsArray);
+      return; // Return here to prevent further execution of the function
     } else if (sortOption === 'nameZA') {
-      productsCollection = productsCollection.orderBy('name', 'desc');
+      productsCollection = await productsCollection.get();
+      const productsArray = productsCollection.docs.map((snap) => snap.data()).filter((product) => product.name !== undefined);
+      productsArray.sort((a, b) => b.name.localeCompare(a.name));
+      setProducts(productsArray);
+      setFilteredProducts(productsArray);
+      return; // Return here to prevent further execution of the function
     }
-
+  
     // Apply search query filter
     if (searchQuery) {
-      const lowerCaseQuery = searchQuery;
+      const lowerCaseQuery = searchQuery.toLowerCase(); // Convert to lowercase for case-insensitive search
       productsCollection = productsCollection.where('name', '>=', lowerCaseQuery).where('name', '<=', lowerCaseQuery + '\uf8ff');
     }
-
+  
     const productsSnapshot = await productsCollection.get();
-    const productsArray = [];
-
-    productsSnapshot.forEach((snap) => {
-      const data = snap.data();
-      data.ID = snap.id;
-      productsArray.push(data);
-    });
-
+    const productsArray = productsSnapshot.docs.map((snap) => snap.data());
+  
     setProducts(productsArray);
     setFilteredProducts(productsArray);
   };
+  
+  
 
 
   useEffect(() => {
@@ -132,6 +141,12 @@ export default function Home() {
         try {
           await docRef.set(updatedProduct);
           console.log('Successfully added to cart');
+          setShowPopup(true);
+
+          // Hide the pop-up message after 3 seconds
+          setTimeout(() => {
+            setShowPopup(false);
+          }, 3000);
         } catch (error) {
           console.error('Error adding to cart:', error);
         }
@@ -180,8 +195,8 @@ export default function Home() {
                 <button onClick={() => setSelectedSortOption('')}>Default</button>
                 <button onClick={() => setSelectedSortOption('priceLowToHigh')}>Price: Low to High</button>
                 <button onClick={() => setSelectedSortOption('priceHighToLow')}>Price: High to Low</button>
-                <button onClick={() => setSelectedSortOption('nameAZ')}>Name: A-Z</button>
-                <button onClick={() => setSelectedSortOption('nameZA')}>Name: Z-A</button>
+                {/* <button onClick={() => setSelectedSortOption('nameAZ')}>Name: A-Z</button>
+                <button onClick={() => setSelectedSortOption('nameZA')}>Name: Z-A</button> */}
               </div>
 
               <h2>Categories</h2>
@@ -197,7 +212,7 @@ export default function Home() {
             </div>
             <div className="filter-section">
               <h2>Price Range</h2>
-              <button onClick={() => setSelectedPriceRange('')}>All</button>
+              <button onClick={() => setSelectedPriceRange('0-999999999999999999')}>All</button>
               <button onClick={() => setSelectedPriceRange('0-500')}>0 - 500</button>
               <button onClick={() => setSelectedPriceRange('500-1000')}>500-1000</button>
               <button onClick={() => setSelectedPriceRange('1000-5000')}>1000-5000</button>
@@ -221,8 +236,8 @@ export default function Home() {
                       <button onClick={() => setSelectedSortOption('')}>Default</button>
                       <button onClick={() => setSelectedSortOption('priceLowToHigh')}>Price: Low to High</button>
                       <button onClick={() => setSelectedSortOption('priceHighToLow')}>Price: High to Low</button>
-                      <button onClick={() => setSelectedSortOption('nameAZ')}>Name: A-Z</button>
-                      <button onClick={() => setSelectedSortOption('nameZA')}>Name: Z-A</button>
+                      {/* <button onClick={() => setSelectedSortOption('nameAZ')}>Name: A-Z</button>
+                      <button onClick={() => setSelectedSortOption('nameZA')}>Name: Z-A</button> */}
                     </div>
                     <h2>Categories</h2>
                     <button onClick={() => setSelectedCategory('')}>All</button>
@@ -249,12 +264,27 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="products-containerb">
-          {products.length > 0 && <Products products={products} addToCart={addToCart} />}
-          {products.length < 1 && <div className='container-fluid'>Loading..............</div>}
 
+        <div className="products-container2">
+          <h2 className="products-heading2">Product List</h2>
+          <div className="products-grid2">
+            {filteredProducts.map((product) => (
+              <div key={product.ID} className="product-item2"
+              >
+                <img src={product.url} alt={product.name} className="product-image2" />
+                <h3 className="product-title2">{product.title}</h3>
+                <p className="product-description2">{product.description}</p>
+                <p className="product-price2">Price: <faRupee />{product.price}</p>
+                {/* Add any other product details you want to display */}
+                <button className="delete-button2" onClick={() => addToCart(product)}>Add to Cart</button>
+              </div>
+            ))}
+
+          </div>
         </div>
       </div>
+      {showPopup && <div className="popup-message">Added to cart</div>}
+   
       <Footer />
     </div>
   );
